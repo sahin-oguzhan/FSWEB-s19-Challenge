@@ -53,7 +53,7 @@ public class User {
     @NotNull
     @NotEmpty
     @NotBlank
-    private LocalDate registrationDate;
+    private LocalDate registrationDate = LocalDate.now();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Tweet> tweets = new ArrayList<>();

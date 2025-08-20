@@ -1,4 +1,4 @@
-package com.workintech.twitterclone.Repository;
+package com.workintech.twitterclone.repository;
 
 import com.workintech.twitterclone.entity.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
