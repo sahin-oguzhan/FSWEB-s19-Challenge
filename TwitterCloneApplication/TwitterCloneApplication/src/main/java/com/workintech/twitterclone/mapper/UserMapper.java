@@ -1,10 +1,13 @@
 package com.workintech.twitterclone.mapper;
 
-import com.workintech.twitterclone.dto.UserPatchRequestDto;
-import com.workintech.twitterclone.dto.UserRequestDto;
-import com.workintech.twitterclone.dto.UserResponseDto;
+import com.workintech.twitterclone.dto.user.UserPatchRequestDto;
+import com.workintech.twitterclone.dto.user.UserRequestDto;
+import com.workintech.twitterclone.dto.user.UserResponseDto;
 import com.workintech.twitterclone.entity.User;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Component
 public class UserMapper {
@@ -15,7 +18,7 @@ public class UserMapper {
         user.setLastName(userRequestDto.lastName());
         user.setEmail(userRequestDto.email());
         user.setPassword(userRequestDto.password());
-        user.setRegistrationDate(userRequestDto.registrationDate());
+        user.setRegistrationDate(LocalDate.now());
         return user;
     }
 

@@ -1,10 +1,9 @@
 package com.workintech.twitterclone.service;
 
-import com.workintech.twitterclone.config.SecurityConfig;
-import com.workintech.twitterclone.dto.UserPatchRequestDto;
+import com.workintech.twitterclone.dto.user.UserPatchRequestDto;
 import com.workintech.twitterclone.repository.UserRepository;
-import com.workintech.twitterclone.dto.UserRequestDto;
-import com.workintech.twitterclone.dto.UserResponseDto;
+import com.workintech.twitterclone.dto.user.UserRequestDto;
+import com.workintech.twitterclone.dto.user.UserResponseDto;
 import com.workintech.twitterclone.entity.User;
 import com.workintech.twitterclone.exceptions.UserNotFoundException;
 import com.workintech.twitterclone.mapper.UserMapper;
@@ -53,7 +52,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()){
             user.setId(id);
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            //user.setPassword(passwordEncoder.encode(user.getPassword()));
             return userMapper.toResponse(userRepository.save(user));
         }
         return userMapper.toResponse(userRepository.save(user));

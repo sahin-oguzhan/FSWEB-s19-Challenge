@@ -1,4 +1,4 @@
-package com.workintech.twitterclone.dto;
+package com.workintech.twitterclone.dto.user;
 
 public record UserResponseDto(String username) {
 }

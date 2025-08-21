@@ -1,8 +1,8 @@
 package com.workintech.twitterclone.controller;
 
-import com.workintech.twitterclone.dto.UserPatchRequestDto;
-import com.workintech.twitterclone.dto.UserRequestDto;
-import com.workintech.twitterclone.dto.UserResponseDto;
+import com.workintech.twitterclone.dto.user.UserPatchRequestDto;
+import com.workintech.twitterclone.dto.user.UserRequestDto;
+import com.workintech.twitterclone.dto.user.UserResponseDto;
 import com.workintech.twitterclone.service.UserService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.Positive;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/use")
+@RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
@@ -29,18 +29,21 @@ public class UserController {
         return userService.findById(id);
     }
 
+    @Transactional
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public UserResponseDto create(@Validated @RequestBody UserRequestDto userRequestDto){
         return userService.create(userRequestDto);
     }
 
+    @Transactional
     @PutMapping("/{id}")
     public UserResponseDto replaceOrCreate(@PathVariable Long id,
                                            @Validated @RequestBody UserRequestDto userRequestDto){
         return userService.createOrReplace(id, userRequestDto);
     }
 
+    @Transactional
     @PatchMapping("/{id}")
     public UserResponseDto update(@PathVariable Long id,
                                   @Validated @RequestBody UserPatchRequestDto userPatchRequestDto){

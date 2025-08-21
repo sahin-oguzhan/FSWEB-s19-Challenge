@@ -1,5 +1,7 @@
 package com.workintech.twitterclone.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -30,12 +32,14 @@ public class Tweet {
     private String content;
 
     @Column(name = "tweet_time")
-    private LocalDateTime tweetTime;
+    private LocalDateTime tweetTime = LocalDateTime.now();
 
+    @JsonBackReference
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "user_id")
     private User user;
 
+    @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tweet")
     private List<Like> likes = new ArrayList<>();
 
@@ -70,6 +74,7 @@ public class Tweet {
         comments.remove(comment);
     }
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "tweet", cascade = CascadeType.ALL)
     private List<Retweet> retweets = new ArrayList<>();
 
