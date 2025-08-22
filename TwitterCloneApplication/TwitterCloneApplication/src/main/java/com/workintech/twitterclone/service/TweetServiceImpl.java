@@ -33,6 +33,12 @@ public class TweetServiceImpl implements TweetService {
         return tweetRepository.findAll().stream().map(tweetMapper::toResponse).toList();
     }
 
+    public TweetResponseDto findById(Long tweetId){
+        Tweet tweet = tweetRepository.findById(tweetId).orElseThrow(() -> new TweetNotFoundException("Tweet not found with id: " + tweetId));
+
+        return tweetMapper.toResponse(tweet);
+    }
+
     @Override
     public List<TweetResponseDto> findByUserName(String username) {
         List<Tweet> tweets = tweetRepository.findByUsername(username);
@@ -42,6 +48,16 @@ public class TweetServiceImpl implements TweetService {
 
         return tweets.stream().map(tweetMapper::toResponse).toList();
 
+    }
+
+    @Override
+    public List<TweetResponseDto> findByUserId(Long userId){
+        List<Tweet> tweets = tweetRepository.findByUserId(userId);
+
+        if (tweets.isEmpty())
+            throw new TweetNotFoundException("No tweets found for this user: " + userId);
+
+        return tweets.stream().map(tweetMapper::toResponse).toList();
     }
 
     @Override

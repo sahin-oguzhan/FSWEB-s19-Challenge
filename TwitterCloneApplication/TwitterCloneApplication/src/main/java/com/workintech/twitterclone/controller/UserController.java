@@ -3,10 +3,13 @@ package com.workintech.twitterclone.controller;
 import com.workintech.twitterclone.dto.user.UserPatchRequestDto;
 import com.workintech.twitterclone.dto.user.UserRequestDto;
 import com.workintech.twitterclone.dto.user.UserResponseDto;
+import com.workintech.twitterclone.entity.User;
+import com.workintech.twitterclone.mapper.UserMapper;
 import com.workintech.twitterclone.service.UserService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +20,10 @@ import java.util.List;
 @RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
+    @Autowired
     private final UserService userService;
+    @Autowired
+    private final UserMapper userMapper;
 
     @GetMapping
     public List<UserResponseDto> findAll(){
@@ -27,6 +33,12 @@ public class UserController {
     @GetMapping("/{id}")
     public UserResponseDto findById(@Positive @PathVariable Long id){
         return userService.findById(id);
+    }
+
+    @GetMapping("/{username}/{email}")
+    public UserResponseDto findByUsernameOrEmail(@PathVariable String username, @PathVariable String email){
+        User user = userService.findByUsernameOrEmail(username, email);
+        return userMapper.toResponse(user);
     }
 
     @Transactional

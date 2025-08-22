@@ -1,11 +1,12 @@
 package com.workintech.twitterclone.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.workintech.twitterclone.entity.Role;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
-import java.time.LocalDate;
+import java.util.Set;
 
 public record UserRequestDto(@NotNull
                              @NotEmpty

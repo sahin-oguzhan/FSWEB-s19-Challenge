@@ -9,6 +9,9 @@ import com.workintech.twitterclone.exceptions.UserNotFoundException;
 import com.workintech.twitterclone.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +20,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
     @Autowired
     private final UserRepository userRepository;
     @Autowired
@@ -39,6 +42,14 @@ public class UserServiceImpl implements UserService {
                 throw new UserNotFoundException("User not found with id: " + id);
     }
 
+    public User findByUsernameOrEmail(String username, String email){
+        Optional<User> user = userRepository.findByUsernameOrEmail(username, email);
+        if (user.isPresent()){
+            return user.get();
+        }
+        throw new UserNotFoundException("User not found with username: " + username + " and email: " + email);
+    }
+
     @Override
     public UserResponseDto create(UserRequestDto userRequestDto) {
         User user = userMapper.toEntity(userRequestDto);
@@ -52,7 +63,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()){
             user.setId(id);
-            //user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             return userMapper.toResponse(userRepository.save(user));
         }
         return userMapper.toResponse(userRepository.save(user));
@@ -75,5 +86,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(Long id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("Username not found: " + username));
     }
 }

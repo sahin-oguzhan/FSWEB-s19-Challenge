@@ -10,4 +10,7 @@ import java.util.List;
 public interface TweetRepository extends JpaRepository<Tweet,Long> {
     @Query("SELECT t FROM Tweet t WHERE t.user.username = :username")
     public List<Tweet> findByUsername(String username);
+
+    @Query("SELECT t FROM Tweet t WHERE t.user.id = :userId")
+    public List<Tweet> findByUserId(Long userId);
 }

@@ -29,6 +29,11 @@ public class TweetController {
         return tweetService.findByUserName(username);
     }
 
+    @GetMapping("/{userId}")
+    public List<TweetResponseDto> findByUserId(@Positive @PathVariable Long userId){
+        return tweetService.findByUserId(userId);
+    }
+
     @PostMapping
     public TweetResponseDto create(@Validated @RequestBody TweetRequestDto tweetRequestDto){
         return tweetService.create(tweetRequestDto);
